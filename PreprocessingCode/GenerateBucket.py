@@ -18,14 +18,15 @@ words_df = pd.read_csv('All_Beauty10000.csv');
 from sklearn.feature_extraction.text import CountVectorizer;
 from sklearn.feature_extraction.text import TfidfVectorizer;
 
+
 #generate a sparce array from the things
 words_df['documents'] = [" ".join(preprocessing.tokenize(doc)).split(" ") for doc in words_df['documents']];
 all_words = vectorization.getAllWordsFromDF(words_df, 'documents');
 docList= [" ".join(doc) for doc in words_df['documents']];
 
 # docList = vectorization.ListToString(words_df,'documents')
-v,sparceVector = vectorization.vectorize(CountVectorizer, all_words, docList);
-type(v.vocabulary)
+vectorizer, sparceVector = vectorization.vectorize(CountVectorizer, all_words, docList);
+type(vectorizer.vocabulary)
 sv_array = sparceVector.toarray();
 
 #now we just need to form our labels in whatever way we want them to
@@ -103,7 +104,7 @@ train_y = targets[10000:]
 def runOnSample(input):
     prepped = preprocessing.preprocessForSentimentAnalsis(input,preprocessing.stopwords,preprocessing.lemmatizer)
     prepped= " ".join(prepped)
-    sparce_inputs = v.transform([prepped]).toarray()
+    sparce_inputs = vectorizer.transform([prepped]).toarray()
     return modelAmazon.predict(sparce_inputs)[0][0]
 
 
