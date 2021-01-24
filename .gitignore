@@ -1,1 +1,4 @@
 nlp-web/
+*.csv
+*.gz
+*.pyc
